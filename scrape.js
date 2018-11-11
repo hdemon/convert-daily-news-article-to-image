@@ -1,25 +1,31 @@
+const launchChrome = require('@serverless-chrome/lambda')
+const CDP = require('chrome-remote-interface');
 const puppeteer = require('puppeteer');
 
-(async () => {
-  const browser = await puppeteer.launch();
-  // const browser = await puppeteer.launch({ headless: false });
-  const page = await browser.newPage();
-  await page.goto('https://www.rarejob.com/dna/');
-  await page.screenshot({ path: 'example.png' });
-  await page.click('main > article > header > h1 > a')
-  await page.waitForSelector('body[class~="single-post"]')
-  await page.evaluate(() => {
-    const sidebar = document.querySelector('#sidebar1')
-    const footer = document.querySelector('.footer')
-    const header = document.querySelector('#container')
-    const font_size_box = document.querySelector('.fsz_box')
-    sidebar.parentNode.removeChild(sidebar)
-    footer.parentNode.removeChild(footer)
-    header.parentNode.removeChild(header)
-    font_size_box.parentNode.removeChild(font_size_box)
-  })
+exports.handler = (event, context, callback) => {
+  (async () => {
+    const slsChrome = await launchChrome({
+      flags: ['--headless']
+    })
+    const browser = await puppeteer.connect({
+      browserWSEndpoint: (await CDP.Version()).webSocketDebuggerUrl
+    })
+    const page = await browser.newPage();
+    await page.goto('https://www.jaccs.co.jp/Service?_TRANID=JALG00001_00M');
+    await page.type('#validatie-login-id', process.argv[2] || process.env.JACCS_ID);
+    await page.type('#validatie-login-password', process.argv[3] || process.env.JACCS_PASSWORD);
+    await page.click('#submit_login');
+    await page.waitForSelector('#contents > div.three-colum > div.nav-section.nav-title > div > dl:nth-child(1) > dd:nth-child(4) > a');
+    await page.click('#contents > div.three-colum > div.nav-section.nav-title > div > dl:nth-child(1) > dd:nth-child(4) > a');
+    await page.waitForSelector('.point-table.mb20 .fwNml');
 
-  await page.screenshot({ path: 'example.png',  fullPage: true });
-
-  await browser.close();
-})();
+    const string = await page.evaluate(() => {
+      return document.querySelector('.point-table.mb20 .fwNml').innerText
+    });
+    const price = string.slice(0, -1).replace(/\,/g, '')
+    await console.log(price)
+    await browser.close()
+  })().catch((e) => {
+    console.error(e)
+  });
+};

@@ -1,9 +1,11 @@
 {
   "dependencies": {
-    "jsdom": "^11.5.1",
-    "puppeteer": "^0.13.0"
+    "@serverless-chrome/lambda": "^1.0.0-55",
+    "chrome-launcher": "^0.10.5",
+    "chrome-remote-interface": "^0.26.1",
+    "puppeteer": "^1.10.0"
   },
-  "name": "moneyforward-scraper",
+  "name": "jaccs-scraper",
   "version": "1.0.0",
   "main": "scrape.js",
   "scripts": {
@@ -11,13 +13,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hdemon/moneyforward-scraper.git"
+    "url": "git+https://github.com/hdemon/jaccs-scraper.git"
   },
   "author": "Masami Yonehara",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hdemon/moneyforward-scraper/issues"
+    "url": "https://github.com/hdemon/jaccs-scraper/issues"
   },
-  "homepage": "https://github.com/hdemon/moneyforward-scraper#readme",
+  "homepage": "https://github.com/hdemon/jaccs-scraper#readme",
   "description": ""
 }
