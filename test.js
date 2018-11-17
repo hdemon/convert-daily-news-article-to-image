@@ -1,4 +1,4 @@
 const scrape = require('./scrape.js')
 
-scrape.handler()
+scrape.execute()
     .then((result) => console.log(result))

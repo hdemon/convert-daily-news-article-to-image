@@ -1,9 +1,11 @@
 {
   "dependencies": {
     "@serverless-chrome/lambda": "^1.0.0-55",
+    "aws-sdk": "^2.353.0",
     "chrome-launcher": "^0.10.5",
     "chrome-remote-interface": "^0.26.1",
-    "puppeteer": "^1.10.0"
+    "puppeteer": "^1.10.0",
+    "uuid": "^3.3.2"
   },
   "name": "jaccs-scraper",
   "version": "1.0.0",
